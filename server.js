@@ -13,6 +13,8 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from public directory
 app.use(express.static(path.join(__dirname, "public")));
 
 // ============ TASK API ENDPOINTS ============
@@ -266,7 +268,7 @@ app.get("/api/stats", (req, res) => {
   }
 });
 
-// Health check (useful for Render)
+// Health check
 app.get("/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
@@ -287,7 +289,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Internal server error" });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`\n  TaskFlow server running on http://localhost:${PORT}\n`);
-});
+// For Vercel serverless: export the app
+// For local dev: start the server
+if (process.env.VERCEL) {
+  module.exports = app;
+} else {
+  app.listen(PORT, () => {
+    console.log(`\n  TaskFlow server running on http://localhost:${PORT}\n`);
+  });
+}
