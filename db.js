@@ -2,17 +2,20 @@ const Database = require("better-sqlite3");
 const path = require("path");
 const fs = require("fs");
 
-const DB_PATH = path.join(__dirname, "db", "tasks.db");
+// On Vercel (and other serverless platforms), the filesystem is read-only
+// except for /tmp. Use /tmp for the SQLite database when deployed there.
+const isVercel = !!process.env.VERCEL;
+const DB_DIR = isVercel ? "/tmp" : path.join(__dirname, "db");
+const DB_PATH = path.join(DB_DIR, "tasks.db");
 
 // Singleton database connection
 let dbInstance = null;
 
 function getDb() {
   if (!dbInstance) {
-    // Ensure db directory exists (important for cloud deployments like Render)
-    const dbDir = path.dirname(DB_PATH);
-    if (!fs.existsSync(dbDir)) {
-      fs.mkdirSync(dbDir, { recursive: true });
+    // Ensure db directory exists
+    if (!fs.existsSync(DB_DIR)) {
+      fs.mkdirSync(DB_DIR, { recursive: true });
     }
     dbInstance = new Database(DB_PATH);
     dbInstance.pragma("journal_mode = WAL");
