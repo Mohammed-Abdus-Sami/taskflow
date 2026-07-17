@@ -1,7 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const getDb = require("./db");
+const { getDb, initDatabase } = require("./db");
+
+// Initialize database on startup (auto-creates tables & seeds data)
+initDatabase();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -261,6 +264,11 @@ app.get("/api/stats", (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch stats", detail: err.message });
   }
+});
+
+// Health check (useful for Render)
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
 // Serve frontend
