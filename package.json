@@ -8,6 +8,9 @@
     "dev": "node --watch server.js",
     "init-db": "node database.js"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "keywords": ["task-management", "fullstack", "nodejs", "express", "sqlite"],
   "author": "Mohammed-Abdus-Sami",
   "license": "MIT",
