@@ -1,0 +1,19 @@
+{
+  "name": "taskflow",
+  "version": "1.0.0",
+  "description": "A full-stack task management web application built with Node.js, Express, and SQLite",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "init-db": "node database.js"
+  },
+  "keywords": ["task-management", "fullstack", "nodejs", "express", "sqlite"],
+  "author": "Mohammed-Abdus-Sami",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "express": "^4.21.0",
+    "cors": "^2.8.5"
+  }
+}
